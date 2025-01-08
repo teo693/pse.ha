@@ -1,0 +1,11 @@
+name: "pse.ha"
+description: "get data from pse.pl"
+version: "1.0.0"
+slug: "get energy hours"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
