@@ -17,6 +17,7 @@ hassio_api: true
 homeassistant_api: true
 options:
   scan_interval: 300
+  SUPERVISOR_TOKEN:
 schema:
   scan_interval: int
 init: false
