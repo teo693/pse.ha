@@ -12,6 +12,9 @@ arch:
 startup: application
 boot: auto
 url: "https://api.raporty.pse.pl"
+auth_api: true
+hassio_api: true
+homeassistant_api: true
 options:
   scan_interval: 300
 schema:
