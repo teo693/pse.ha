@@ -1,11 +1,18 @@
-name: "pse.ha"
-description: "get data from pse.pl"
+# config.yaml
+name: "PSE Energy Status"
 version: "1.0.0"
-slug: "get energy hours"
-init: false
+slug: "pse_energy_status"
+description: "Monitor PSE energy status markers for home automation"
 arch:
   - aarch64
   - amd64
   - armhf
   - armv7
   - i386
+startup: application
+boot: auto
+url: "https://api.raporty.pse.pl"
+options:
+  scan_interval: 300
+schema:
+  scan_interval: int
