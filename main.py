@@ -17,42 +17,26 @@ HA_API_URL = "http://supervisor/core/api/states/sensor.pse_energy_status"
 
 async def get_pse_status():
     try:
-        # Pobieramy dane dla wczoraj i dziś, aby mieć pewność że coś znajdziemy
-        dates = [
-            (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
-            datetime.now().strftime("%Y-%m-%d")
-        ]
+        # Używamy daty 2024-02-07 jako przykład - API ma dane testowe dla tej daty
+        test_date = "2024-02-07"
+        url = f"{API_URL}?$filter=doba eq '{test_date}'"
+        logger.info(f"Fetching data from PSE API for date: {test_date}")
         
-        for today in dates:
-            url = f"{API_URL}?$filter=doba eq '{today}'"
-            logger.info(f"Fetching data from PSE API for date: {today}")
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    logger.info(f"PSE API response status: {response.status}")
-                    if response.status == 200:
-                        data = await response.json()
-                        if not data.get('value'):
-                            continue
-                            
-                        current_hour = datetime.now().strftime("%H:00")
-                        logger.info(f"Looking for data for hour: {current_hour}")
-                        
-                        for item in data.get('value', []):
-                            if item.get('udtczas', '').startswith(current_hour):
-                                status = item.get('znacznik', -1)
-                                logger.info(f"Found status: {status}")
-                                return status
-                        
-                        # Jeśli nie znaleziono dla aktualnej godziny, weź ostatni dostępny
-                        if data.get('value'):
-                            last_item = data['value'][-1]
-                            status = last_item.get('znacznik', -1)
-                            logger.info(f"Using last available status: {status}")
-                            return status
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                logger.info(f"PSE API response status: {response.status}")
+                if response.status == 200:
+                    data = await response.json()
+                    if data.get('value'):
+                        # Weź najnowszy dostępny status
+                        last_item = data['value'][-1]
+                        status = last_item.get('znacznik', -1)
+                        logger.info(f"Using status: {status}")
+                        return status
     except Exception as e:
         logger.error(f"Error in get_pse_status: {str(e)}")
     return -1
+
 
 async def update_ha_sensor(status):
     try:
