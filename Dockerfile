@@ -1,5 +1,5 @@
 # Dockerfile
-FROM homeassistant/amd64-base-python:3.11-alpine3.19
+FROM ghcr.io/home-assistant/amd64-base-python:3.9-alpine3.16
 WORKDIR /usr/src
 ENV LANG C.UTF-8
 COPY run.sh /
