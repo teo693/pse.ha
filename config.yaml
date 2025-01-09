@@ -16,3 +16,7 @@ options:
   scan_interval: 300
 schema:
   scan_interval: int
+init: false
+map:
+  - share:rw
+  - ssl
