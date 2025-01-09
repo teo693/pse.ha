@@ -41,7 +41,7 @@ async def get_pse_status():
 async def update_ha_sensor(status):
     try:
         # Próbujemy pobrać token z różnych możliwych lokalizacji
-        token = os.environ.get('SUPERVISOR_TOKEN')
+        token = int(options.get('token', 300))
         if not token:
             try:
                 with open('/data/auth.txt', 'r') as f:
